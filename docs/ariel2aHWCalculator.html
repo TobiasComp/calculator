@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Calculator</title>
+    <link rel="stylesheet" type="text/css" href="arielStyles/styleCalc.css">
+</head>
+<body>   
+    
+    <div class="container">
+        <div class="calculator">
+        <input type="text" id="display"><br>
+        <table >
+            <tr>
+                <td><button onclick="addCharacter(1)" class="calc-btn">1</button></td>
+                <td><button onclick="addCharacter(2)" class="calc-btn">2</button></td>
+                <td><button onclick="addCharacter(3)" class="calc-btn">3</button></td>
+                <td><button onclick="addCharacter('+')" class="calc-btn">+</button></td>
+            </tr>
+            
+            <tr>
+                <td><button onclick="addCharacter(4)"class="calc-btn">4</button></td>
+                <td><button onclick="addCharacter(5)"class="calc-btn">5</button></td>
+                <td><button onclick="addCharacter(6)"class="calc-btn">6</button></td>
+                <td><button onclick="addCharacter('-')"class="calc-btn">-</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="addCharacter(7)"class="calc-btn">7</button></td>
+                <td><button onclick="addCharacter(8)"class="calc-btn">8</button></td>
+                <td><button onclick="addCharacter(9)"class="calc-btn">9</button></td>
+                <td><button onclick="addCharacter('*')"class="calc-btn">*</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="addCharacter('clr')"class="calc-btn">C</button></td>
+                <td><button onclick="addCharacter('0')"class="calc-btn">0</button></td>
+                <td><button onclick="addCharacter('=')"class="calc-btn">=</button></td>
+                <td><button onclick="addCharacter('/')"class="calc-btn">/</button></td>
+            </tr>
+            
+        </table>
+    </div>
+    <br>
+
+    <div id="history">
+    </div>
+</div>
+</div>    
+
+    <script>
+       
+        let hist= "";
+        let arr = "";
+
+        function addCharacter(num){
+            console.log("addCharacter start ",num );
+            arr += num;
+            let display = document.getElementById("display");
+            display.value += num;
+            if (num == "="){
+                arr = calc();
+                
+            }
+            if (num=='clr') {
+                arr = "";
+                display.value ='';
+            }
+            console.log("addCharacter end ");
+
+        }
+        
+        function calc(){
+            console.log("calc start " );
+
+            let numb = '';
+            let nums = [];
+            
+            for (let i=0; i<arr.length; i++){
+                if ((arr.charCodeAt(i) >= 48) && (arr.charCodeAt(i) <= 57))
+                    numb += arr[i];
+                else {
+                    
+                    nums.push ( numb*1 );
+                    nums.push( arr[i] );
+                    numb ='';
+                }
+            }
+            
+            switch(nums[1]){
+                case "+":
+                    nums.push( nums[0] + nums[2] );
+                    break;
+                case "-":
+                    nums.push(nums[0]-nums[2]);
+                    break;
+                case "*":
+                    nums.push(nums[0]*nums[2]);
+                    break;
+                case "/":
+                    nums.push(nums[0]/nums[2]);
+                    break;    
+                default:
+                    console.error("invalid characters were entered", nums[1]);
+
+            }
+            
+            let display = document.getElementById("display");
+            
+            display.value += nums[4];
+            hist += display.value + "\n";
+            display.value = nums[4];
+            let historyDisplay = document.getElementById("history");
+            historyDisplay.innerText = hist;
+            // historyDisplay.innerText ='';
+            // for (let i=0; i<hist.length; i++) 
+            //     historyDisplay.innerText += hist[i] + "\n";
+            console.log("calc end " );
+
+            return nums[4];
+        }
+    
+    </script>
+</body>
+</html>
