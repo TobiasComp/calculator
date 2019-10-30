@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Calculator</title>
+    <title>Itche Calculator</title>
     <link rel="stylesheet" type="text/css" href="arielStyles/styleCalc.css">
 </head>
 <body>   
@@ -49,6 +49,8 @@
        
         let hist= "";
         let arr = "";
+        let nums = [];
+
 
         function addCharacter(num){
             console.log("addCharacter start ",num );
@@ -71,8 +73,7 @@
             console.log("calc start " );
 
             let numb = '';
-            let nums = [];
-            
+            nums=[];
             for (let i=0; i<arr.length; i++){
                 if ((arr.charCodeAt(i) >= 48) && (arr.charCodeAt(i) <= 57))
                     numb += arr[i];
@@ -83,39 +84,58 @@
                     numb ='';
                 }
             }
+            nums.pop();
             
-            switch(nums[1]){
-                case "+":
-                    nums.push( nums[0] + nums[2] );
-                    break;
-                case "-":
-                    nums.push(nums[0]-nums[2]);
-                    break;
-                case "*":
-                    nums.push(nums[0]*nums[2]);
-                    break;
-                case "/":
-                    nums.push(nums[0]/nums[2]);
-                    break;    
-                default:
-                    console.error("invalid characters were entered", nums[1]);
-
+            while (nums.length>1){
+               let highest = findHighest(nums);
+               let total = calculateZug(highest);
+               deleteElems(highest,total);
             }
+           
             
             let display = document.getElementById("display");
             
-            display.value += nums[4];
+            display.value += nums[0];
             hist += display.value + "\n";
-            display.value = nums[4];
+            display.value = nums[0];
             let historyDisplay = document.getElementById("history");
             historyDisplay.innerText = hist;
-            // historyDisplay.innerText ='';
-            // for (let i=0; i<hist.length; i++) 
-            //     historyDisplay.innerText += hist[i] + "\n";
+            
             console.log("calc end " );
 
-            return nums[4];
+            return nums[0];
         }
+
+        function findHighest(){
+            let highest = 1;
+            for (let i = 0; i < nums.length; i++) {
+                if (i%2==1) {
+                    if ((nums[i]=="*") || (nums[i]=="/"))
+                        highest = i;
+                }
+                
+            }
+            return highest;
+        }
+
+        function calculateZug(index){
+            switch(nums[index]){
+                case "+":
+                    return nums[index-1] + nums[index+1] ;
+                case "-":
+                    return nums[index-1] - nums[index+1]
+                case "*":
+                    return nums[index-1] * nums[index+1];
+                case "/":
+                    return nums[index-1] / nums[index+1];   
+                
+            }
+        }
+        function deleteElems(high,tot){
+            nums[high-1] = tot;
+            nums.splice(high,2);
+        }
+        
     
     </script>
 </body>
